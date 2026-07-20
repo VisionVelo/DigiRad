@@ -1,6 +1,6 @@
 # DigiRad – Digitales Radverkehrskonzept
 
-[![QGIS Version](https://img.shields.io/badge/QGIS-3.16%2B-blue)](https://www.qgis.org/)
+[![QGIS Version](https://img.shields.io/badge/QGIS-3.16%2B%20%7C%204.0%2B-blue)](https://www.qgis.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-0.7.0-orange)](https://github.com/VisionVelo/DigiRad/releases)
 
@@ -19,6 +19,15 @@ DigiRad ist ein QGIS-Plugin, das die automatiserte Erstellung von Radverkehrsnet
 - **Nachfragebasierte Umlegung**: Integration genutzter Wege aus Crowdsourcing-GPS-Daten
 - **Offene Daten**: Unterstützung von Daten aus der Mobilithek und OpenStreetMap
 - **Standardisierte Arbeitsabläufe**: Wiederholbare und dokumentierte Planungsprozesse
+
+## Versionen & Kompatibilität
+
+DigiRad wird für QGIS 3.x (Qt5) und QGIS 4.x (Qt6) parallel gepflegt. Wählen Sie die zu Ihrer QGIS-Version passende Plugin-Version:
+
+| QGIS-Version   | Qt  | Plugin-Version         | Download                                                                                                          |
+| -------------- | --- | ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| QGIS 3.16 – 3.x | Qt5 | v0.7.x                 | [ZIP herunterladen](https://github.com/VisionVelo/DigiRad/releases/latest/download/visionvelo_digirad.zip)       |
+| QGIS 4.0+      | Qt6 | v0.8.x (in Vorbereitung) | _Download-Link folgt mit dem 4.x-Release_ <!-- TODO: Link auf 4.x-Release-ZIP eintragen, sobald veröffentlicht --> |
 
 ## Installation
 
