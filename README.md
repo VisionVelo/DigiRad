@@ -1,8 +1,8 @@
 # DigiRad – Digitales Radverkehrskonzept
 
-[![QGIS Version](https://img.shields.io/badge/QGIS-3.16%2B%20%7C%204.0%2B-blue)](https://www.qgis.org/)
+[![QGIS Version](https://img.shields.io/badge/QGIS-4.0%2B%20%7C%203.16%2B-blue)](https://www.qgis.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-0.7.0-orange)](https://github.com/VisionVelo/DigiRad/releases)
+[![Version](https://img.shields.io/badge/Version-0.8.0%20%7C%200.7.4-orange)](https://github.com/VisionVelo/DigiRad/releases)
 
 ![DigiRad Logo](res/NRVP_DigiRad_Projektlogo.jpg)
 
@@ -22,18 +22,18 @@ DigiRad ist ein QGIS-Plugin, das die automatiserte Erstellung von Radverkehrsnet
 
 ## Versionen & Kompatibilität
 
-DigiRad wird für QGIS 3.x (Qt5) und QGIS 4.x (Qt6) parallel gepflegt. Wählen Sie die zu Ihrer QGIS-Version passende Plugin-Version:
+DigiRad wird für **QGIS 3.x (Qt5)** und **QGIS 4.x (Qt6)** parallel gepflegt. Wählen Sie die zu Ihrer QGIS-Version passende Plugin-Version:
 
 | QGIS-Version   | Qt  | Plugin-Version         | Download                                                                                                          |
 | -------------- | --- | ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| QGIS 3.16 – 3.x | Qt5 | v0.7.x                 | [ZIP herunterladen](https://github.com/VisionVelo/DigiRad/releases/latest/download/visionvelo_digirad.zip)       |
-| QGIS 4.0+      | Qt6 | v0.8.x (in Vorbereitung) | _Download-Link folgt mit dem 4.x-Release_ <!-- TODO: Link auf 4.x-Release-ZIP eintragen, sobald veröffentlicht --> |
+| QGIS 3.16 – 3.x | Qt5 | **v0.7.4**                 | [ZIP herunterladen](https://github.com/VisionVelo/DigiRad/releases/tag/v0.7.4)       |
+| QGIS 4.0+      | Qt6 | v0.8.x  | [ZIP herunterladen](https://github.com/VisionVelo/DigiRad/releases/latest/download/visionvelo_digirad.zip) |
 
 ## Installation
 
 ### Voraussetzungen
 
-- QGIS 3.16 oder höher
+- QGIS 3.16 oder höher bzw. QGIS 4.0
 - Python 3.x
 
 ### Installationsmethoden
@@ -47,7 +47,7 @@ DigiRad wird für QGIS 3.x (Qt5) und QGIS 4.x (Qt6) parallel gepflegt. Wählen S
 
 #### Methode 2: Manuelle Installation
 
-1. Laden Sie das Plugin als [ZIP-Datei](https://github.com/VisionVelo/DigiRad/releases/latest/download/visionvelo_digirad.zip) herunter
+1. Laden Sie das Plugin als ZIP-Datei herunter (siehe [Versionen & Kompatibilität](#versionen--kompatibilität))
 2. Entpacken Sie die Datei in Ihren QGIS-Plugins-Ordner:
    - **Windows**: `C:\Users\<Benutzername>\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\`
    - **Linux**: `~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/`

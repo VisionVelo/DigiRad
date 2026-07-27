@@ -3,7 +3,7 @@ name=DigiRad
 qgisMinimumVersion=4.0
 qgisMaximumVersion=4.99
 description=Unterstützung bei der Erstellung von digitalen Angebotsnetzen für den Radverkehr
-version=0.7.4
+version=0.8.0
 author=Vision Velo GmbH
 email=info@vision-velo.de
 
