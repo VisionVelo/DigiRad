@@ -69,7 +69,7 @@ class CenterEditFeatureHandler:
             dialog = QgsAttributeDialog(self.layer, feature, False, None, True)
             dialog.setMode(QgsAttributeEditorContext.SingleEditMode)
 
-            if dialog.exec_() == 1:
+            if dialog.exec() == 1:
                 # The dialog automatically handles the attribute updates
                 # Refresh the layer to show changes
                 self.layer.triggerRepaint()

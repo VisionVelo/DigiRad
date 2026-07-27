@@ -17,13 +17,12 @@ from typing import Type, Optional, Tuple, List
 
 import os
 
-from PyQt5.QtCore import QTimer
+from qgis.PyQt.QtCore import QTimer
 
 from qgis.core import (
     QgsMessageLog,
     QgsProject,
     QgsCoordinateReferenceSystem,
-    QgsLayerTreeGroup,
     QgsPointXY,
     QgsVectorFileWriter
 )
@@ -61,7 +60,10 @@ class LayerManager:
     def removeAll(self):
         root = QgsProject.instance().layerTreeRoot()
         group = root.findGroup(self.projectName)
-        if not group:
+        # NOTE: never use truthiness on QgsLayerTree* nodes. In the Qt6/PyQt6
+        # bindings they implement __len__ (child count), so an empty group or a
+        # leaf layer node evaluates as falsy even though it is not None.
+        if group is None:
             return
         root.removeChildNode(group)
         self.layers = {}
@@ -87,6 +89,11 @@ class LayerManager:
                     LocationSelectHandler.KBaseLayer)
             else:
                 providerName = ""
+
+            # Remove a previously added base map so we don't end up with
+            # multiple base map layers stacking up
+            if getattr(self, "baseLayer", None):
+                self._removeLayer(self.baseLayer)
 
             self.baseLayer = BaseLayer.createFromProviderName(providerName)
 
@@ -221,7 +228,7 @@ class LayerManager:
                     continue
                 if value.groupName:
                     subgroup = group.findGroup(value.groupName)
-                    if subgroup:
+                    if subgroup is not None:
                         if value.groupName in groupHidelist:
                             subgroup.setItemVisibilityChecked(False)
                             subgroup.setExpanded(False)
@@ -230,8 +237,8 @@ class LayerManager:
                             subgroup.setExpanded(True)
 
                 layerName = value.name()
-                layerNode = group.findLayer(value._qgsLayer)
-                if layerNode:
+                layerNode = root.findLayer(value.id())
+                if layerNode is not None:
                     if layerName in layerHideList:
                         layerNode.setItemVisibilityCheckedRecursive(False)
                         layerNode.setExpanded(False)
@@ -243,69 +250,65 @@ class LayerManager:
     def _getGroup(self, layer: Optional[DigiRadLayer] = None):
         root = QgsProject.instance().layerTreeRoot()
         group = root.findGroup(self.projectName)
-        if not group:
-            # If the project group is not found, add it and then move it to the
-            # top
-            group = root.addGroup(self.projectName)
-            clone = group.clone()
-            root.insertChildNode(0, clone)
-            root.removeChildNode(group)
-            group = clone
+        # NOTE: compare against None explicitly. QgsLayerTree* nodes implement
+        # __len__ in the Qt6/PyQt6 bindings, so an empty group is falsy even
+        # though it exists. Using `if not group` would re-create the group.
+        if group is None:
+            # Insert the project group directly at the top of the layer tree.
+            group = root.insertGroup(0, self.projectName)
 
         if layer and layer.groupName:
             subgroup = group.findGroup(layer.groupName)
-            if subgroup:
-                group = subgroup
-            else:
-                subgroup = group.addGroup(layer.groupName)
-                group = self._moveGroupToTop(group, layer.groupName)
+            if subgroup is None:
+                # Insert new subgroups directly at the top of the project group.
+                subgroup = group.insertGroup(0, layer.groupName)
+            group = subgroup
 
         return (root, group)
 
     def _ensureLayer(self, layer: DigiRadLayer):
         if layer and layer.isQgsLayerPresent():
-            (root, group) = self._getGroup(layer)
             qgsLayer = layer.qgsLayer()
-            layerNode = group.findLayer(qgsLayer)
-            if not layerNode:
-                # Add the layer via the `addMapLayer` fn to the root
-                # and then move it to the group
-                QgsProject.instance().addMapLayer(qgsLayer)
-                layerNode = root.findLayer(qgsLayer.id())
-                if not layerNode:
-                    QgsMessageLog.logMessage(
-                        f"No layer node found for QGIS layer {qgsLayer.id()}")
-                    return
-                clone = layerNode.clone()
-                group.insertChildNode(0, clone)
-                layerNode.parent().removeChildNode(layerNode)
-                if clone:
-                    clone.setItemVisibilityChecked(layer.visible)
-                    clone.setExpanded(layer.expanded)
+            root = QgsProject.instance().layerTreeRoot()
+            # A layer must appear at most once in the layer tree. If it is
+            # already present anywhere in the tree, leave it untouched so that
+            # switching between plugin views does not re-create / duplicate it.
+            # Compare against None explicitly: a found leaf layer node has zero
+            # children and therefore evaluates as falsy under the Qt6/PyQt6
+            # bindings (QgsLayerTree* implements __len__). Using `if found:`
+            # here was the cause of the duplicated layers.
+            if root.findLayer(qgsLayer.id()) is not None:
+                return
+
+            (root, group) = self._getGroup(layer)
+            # Register the layer without adding it to the layer tree
+            # (addToLegend=False), then insert it directly into the target
+            # group. This avoids cloning/re-parenting tree nodes, which is
+            # unreliable and was causing duplicate groups to be created.
+            QgsProject.instance().addMapLayer(qgsLayer, False)
+            # The base map should always be rendered below all other
+            # layers, so it is inserted at the bottom of the group
+            # instead of the top.
+            if isinstance(layer, BaseLayer):
+                layerNode = group.insertLayer(len(group.children()), qgsLayer)
+            else:
+                layerNode = group.insertLayer(0, qgsLayer)
+            if layerNode is None:
+                QgsMessageLog.logMessage(
+                    f"No layer node found for QGIS layer {qgsLayer.id()}")
+                return
+            layerNode.setItemVisibilityChecked(layer.visible)
+            layerNode.setExpanded(layer.expanded)
 
     def _removeLayer(self, layer: DigiRadLayer):
         if layer and layer.isQgsLayerPresent():
-            (root, group) = self._getGroup(layer)
-            if group.findLayer(layer.qgsLayer()):
-                group.removeLayer(layer.qgsLayer())
-
-    def _moveToTop(self, layer: DigiRadLayer):
-        if layer and layer.isQgsLayerPresent():
-            (root, group) = self._getGroup(layer)
-            layerNode = group.findLayer(layer.id())
-
-            clonedNode = layerNode.clone()
-            parent = layerNode.parent()
-            parent.removeChildNode(layerNode)
-            group.insertChildNode(0, clonedNode)
-
-    def _moveGroupToTop(self, group: QgsLayerTreeGroup, childGroupName: str):
-        subGroupNode = group.findGroup(childGroupName)
-
-        clonedNode = subGroupNode.clone()
-        group.removeChildNode(subGroupNode)
-        group.insertChildNode(0, clonedNode)
-        return group.findGroup(childGroupName)
+            root = QgsProject.instance().layerTreeRoot()
+            # Locate the node tree-wide by layer id and remove it from wherever
+            # it is attached. This is reliable even if the layer is not in the
+            # group _getGroup would currently resolve to.
+            layerNode = root.findLayer(layer.id())
+            if layerNode is not None and layerNode.parent() is not None:
+                layerNode.parent().removeChildNode(layerNode)
 
     def updateLayer(self, layer: DigiRadLayer):
         layerName = layer.name()
@@ -334,7 +337,7 @@ class LayerManager:
     def updateProjectName(self):
         root = QgsProject.instance().layerTreeRoot()
         group = root.findGroup(self.projectName)
-        if group:
+        if group is not None:
             group.setName(self.processingConfig.projectName)
 
         self.projectName = self.processingConfig.projectName

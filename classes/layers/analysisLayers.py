@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 from typing import List
 
-from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtCore import QMetaType
 from qgis.core import (
     QgsVectorLayer,
     QgsCategorizedSymbolRenderer,
@@ -23,7 +23,7 @@ from qgis.core import (
     QgsField,
     QgsSymbol,
     QgsMarkerSymbol,
-    QgsWkbTypes,
+    Qgis,
     QgsFeatureRequest
 )
 
@@ -73,12 +73,12 @@ class SupplyNetworkElementLayer(DigiRadLayer):
                                     layerName, "memory")
         pr = routeLayer.dataProvider()
         pr.addAttributes([
-            QgsField(config.edgeIdName, QVariant.LongLong),
-            QgsField(config.cfName, QVariant.String),
-            QgsField(config.occupancyName, QVariant.Int),
-            QgsField(config.occupancyNameCF2, QVariant.Int),
-            QgsField(config.occupancyNameCF3, QVariant.Int),
-            QgsField(config.occupancyNameCF4, QVariant.Int),
+            QgsField(config.edgeIdName, QMetaType.Type.LongLong),
+            QgsField(config.cfName, QMetaType.Type.QString),
+            QgsField(config.occupancyName, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF2, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF3, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF4, QMetaType.Type.Int),
         ])
         routeLayer.updateFields()
         features = []
@@ -95,7 +95,7 @@ class SupplyNetworkElementLayer(DigiRadLayer):
 
         for cf in [ConnectivityFunction.VFS_2,
                    ConnectivityFunction.VFS_3, ConnectivityFunction.VFS_4]:
-            symbol = QgsSymbol.defaultSymbol(QgsWkbTypes.LineGeometry)
+            symbol = QgsSymbol.defaultSymbol(Qgis.GeometryType.Line)
             symbol.setColor(Style.getColorForCF(cf))
             symbol.setWidth(Style.getSizeForCF(cf))
             cat = QgsRendererCategory(cf.asStrShort(), symbol, cf.asStr())
@@ -132,11 +132,11 @@ class SupplyAggregatedNetworkElementLayer(DigiRadLayer):
                                     layerName, "memory")
         pr = routeLayer.dataProvider()
         pr.addAttributes([
-            QgsField(config.cfName, QVariant.String),
-            QgsField(config.occupancyName, QVariant.Int),
-            QgsField(config.occupancyNameCF2, QVariant.Int),
-            QgsField(config.occupancyNameCF3, QVariant.Int),
-            QgsField(config.occupancyNameCF4, QVariant.Int),
+            QgsField(config.cfName, QMetaType.Type.QString),
+            QgsField(config.occupancyName, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF2, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF3, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF4, QMetaType.Type.Int),
         ])
         routeLayer.updateFields()
         features = []
@@ -202,11 +202,11 @@ class BreakingPointsNetworkLayer(DigiRadLayer):
                                layerName, "memory")
         pr = layer.dataProvider()
         pr.addAttributes([
-            QgsField(config.cfName, QVariant.String),
-            QgsField(config.occupancyName, QVariant.Int),
-            QgsField(config.occupancyNameCF2, QVariant.Int),
-            QgsField(config.occupancyNameCF3, QVariant.Int),
-            QgsField(config.occupancyNameCF4, QVariant.Int),
+            QgsField(config.cfName, QMetaType.Type.QString),
+            QgsField(config.occupancyName, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF2, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF3, QMetaType.Type.Int),
+            QgsField(config.occupancyNameCF4, QMetaType.Type.Int),
         ])
         layer.updateFields()
         features = []

@@ -27,7 +27,7 @@ from qgis.core import (
     QgsRectangle,
     QgsSymbol,
     QgsMarkerSymbol,
-    QgsWkbTypes,
+    Qgis,
     QgsEditFormConfig,
     QgsAttributeEditorField,
     QgsEditorWidgetSetup
@@ -130,7 +130,7 @@ class CenterLayer(DigiRadLayer):
             if loc == LevelOfCentrality.Surrounding:
                 symbol = QgsMarkerSymbol.createSimple({'name': 'diamond'})
             else:
-                symbol = QgsSymbol.defaultSymbol(QgsWkbTypes.PointGeometry)
+                symbol = QgsSymbol.defaultSymbol(Qgis.GeometryType.Point)
 
             symbol.setColor(Style.getColorForLOC(loc))
             symbol.setSize(Style.getSizeForLOC(loc))

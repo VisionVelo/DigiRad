@@ -103,7 +103,7 @@ class Style:
     def getStyleForRouteLine(cf: ConnectivityFunction,
                              isDemand: bool = False) -> QgsSymbol:
         if isDemand:
-            symbol = QgsSymbol.defaultSymbol(QgsWkbTypes.LineGeometry)
+            symbol = QgsSymbol.defaultSymbol(Qgis.GeometryType.Line)
             symbol.deleteSymbolLayer(0)
 
             # --- Bottom layer: black dashed, wider ---
@@ -125,7 +125,7 @@ class Style:
             symbol.appendSymbolLayer(baseLine)
             symbol.appendSymbolLayer(topLine)
         else:
-            symbol = QgsSymbol.defaultSymbol(QgsWkbTypes.LineGeometry)
+            symbol = QgsSymbol.defaultSymbol(Qgis.GeometryType.Line)
             symbol.setColor(Style.getColorForCF(cf))
             symbol.setWidth(Style.getSizeForCF(cf))
 

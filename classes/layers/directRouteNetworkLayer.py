@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 from typing import List
 
-from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtCore import QMetaType
 from qgis.core import (
     QgsVectorLayer,
     QgsCategorizedSymbolRenderer,
@@ -62,8 +62,8 @@ class DirectRouteNetworklayer(DigiRadLayer):
         meshlayer = QgsVectorLayer(
             "LineString?crs={}".format(CRS_STR), layerName, "memory")
         pr = meshlayer.dataProvider()
-        pr.addAttributes([QgsField(config.relationName, QVariant.LongLong),
-                          QgsField(config.cfName, QVariant.String)])
+        pr.addAttributes([QgsField(config.relationName, QMetaType.Type.LongLong),
+                          QgsField(config.cfName, QMetaType.Type.QString)])
         meshlayer.updateFields()
 
         feats = []

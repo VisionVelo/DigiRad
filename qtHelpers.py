@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 
 from typing import Optional
-from PyQt5.QtWidgets import QFileDialog
+from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtWidgets import QMessageBox
 
 
@@ -25,11 +25,11 @@ class QtHelper:
             parent,
             "Generierte Layer entfernen",  # Dialog title
             "Wenn Sie diesen Bearbeitungsschritt erneut ausführen, werden nachgelagerte Bearbeitungsschritte gelöscht. Möchten Sie fortfahren?",  # Dialog message
-            QMessageBox.Yes | QMessageBox.No,  # Buttons
-            QMessageBox.No  # Default button
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,  # Buttons
+            QMessageBox.StandardButton.No  # Default button
         )
 
-        return reply == QMessageBox.Yes
+        return reply == QMessageBox.StandardButton.Yes
 
     Yes = 1
     No = 2
@@ -37,15 +37,15 @@ class QtHelper:
 
     @staticmethod
     def askForProjectRestart(parent=None) -> int:
-        msgBox = QMessageBox(parent=parent, icon=QMessageBox.Question)
+        msgBox = QMessageBox(parent=parent, icon=QMessageBox.Icon.Question)
         msgBox.setWindowTitle("Projekt neustarten")
         msgBox.setText(
             "Wenn Sie das Projekt neustarten, werden alle schon erzeugten Daten gelöscht. Möchten Sie fortfahren?")
         msgBox.setIcon
-        yesButton = msgBox.addButton("Ja", QMessageBox.YesRole)
-        noButton = msgBox.addButton("Nein", QMessageBox.NoRole)
+        yesButton = msgBox.addButton("Ja", QMessageBox.ButtonRole.YesRole)
+        noButton = msgBox.addButton("Nein", QMessageBox.ButtonRole.NoRole)
         keepOldProjectButton = msgBox.addButton(
-            "Projektdaten behalten", QMessageBox.ActionRole)
+            "Projektdaten behalten", QMessageBox.ButtonRole.ActionRole)
 
         msgBox.exec()
         if msgBox.clickedButton() == yesButton:
@@ -71,18 +71,18 @@ class QtHelper:
             parent,
             title,
             message,
-            QMessageBox.Ok,  # Button
-            QMessageBox.Ok  # Default button
+            QMessageBox.StandardButton.Ok,  # Button
+            QMessageBox.StandardButton.Ok  # Default button
         )
 
     @staticmethod
     def showAskBox(parent=None, title: str = "", message: str = "") -> int:
-        msgBox = QMessageBox(parent=parent, icon=QMessageBox.Question)
+        msgBox = QMessageBox(parent=parent, icon=QMessageBox.Icon.Question)
         msgBox.setWindowTitle(title)
         msgBox.setText(message)
         msgBox.setIcon
-        yesButton = msgBox.addButton("Ja", QMessageBox.YesRole)
-        noButton = msgBox.addButton("Nein", QMessageBox.NoRole)
+        yesButton = msgBox.addButton("Ja", QMessageBox.ButtonRole.YesRole)
+        noButton = msgBox.addButton("Nein", QMessageBox.ButtonRole.NoRole)
 
         msgBox.exec()
         if msgBox.clickedButton() == yesButton:
@@ -97,7 +97,7 @@ class QtHelper:
             parent,
             "Ordner auswählen",
             "",
-            QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks
+            QFileDialog.Option.ShowDirsOnly | QFileDialog.Option.DontResolveSymlinks
         )
 
         return directoryPath

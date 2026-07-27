@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 from typing import List
 
-from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtCore import QMetaType
 
 from qgis.core import (
     QgsMessageLog,
@@ -69,9 +69,9 @@ class RouteNetworklayer(DigiRadLayer):
                                     layerName, "memory")
         pr = routeLayer.dataProvider()
         pr.addAttributes([
-            QgsField(config.relationName, QVariant.LongLong),
-            QgsField(config.cfName, QVariant.String),
-            QgsField(config.airDistPathRel, QVariant.Double),
+            QgsField(config.relationName, QMetaType.Type.LongLong),
+            QgsField(config.cfName, QMetaType.Type.QString),
+            QgsField(config.airDistPathRel, QMetaType.Type.Double),
         ])
         routeLayer.updateFields()
 
