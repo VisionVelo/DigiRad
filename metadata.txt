@@ -2,12 +2,12 @@
 name=DigiRad
 qgisMinimumVersion=4.0
 qgisMaximumVersion=4.99
-description=Unterstützung bei der Erstellung von digitalen Angebotsnetzen für den Radverkehr
-version=0.7.4
+description=Supports the development of digital bicycle route networks.
+version=0.8.0
 author=Vision Velo GmbH
 email=info@vision-velo.de
 
-about=Unterstützung bei der Erstellung von digitalen Angebotsnetzen für den Radverkehr. Das Projekt wurde gefördert durch das Bundesministerium für Verkehr (BMV) im Rahmen der Richtlinie zur Förderung von nicht investiven Maßnahmen zur Umsetzung des Nationalen Radverkehrsplans (NRVP). 
+about=Supports the development of digital bicycle route networks. The project was funded by the Federal Ministry of Transportation (BMV) under the guidelines for funding non-capital measures to implement the National Cycling Plan (NRVP).
 
 tracker=https://github.com/VisionVelo/DigiRad/issues
 repository=https://github.com/VisionVelo/DigiRad
