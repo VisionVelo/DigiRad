@@ -142,7 +142,7 @@ class CenterLayer(DigiRadLayer):
 
     def _createFormConfig(self):
         formConfig = QgsEditFormConfig()
-        formConfig.setLayout(QgsEditFormConfig.TabLayout)
+        formConfig.setLayout(QgsEditFormConfig.EditorLayout.TabLayout)
         root = formConfig.invisibleRootContainer()
         layer = self.qgsLayer()
         fields = layer.fields()
@@ -204,7 +204,7 @@ class SurroundingHelper:
             featureBounds.yMaximum() + SURROUNDING_QUERY_DISTANCE
         )
         request = QgsFeatureRequest().setFilterRect(
-            queryBounds).setFlags(QgsFeatureRequest.ExactIntersect)
+            queryBounds).setFlags(QgsFeatureRequest.Flag.ExactIntersect)
         locFeatures = CenterLayerFeature.featuresFromLayer(centerLayer, config)
 
         surroundingFeats = []

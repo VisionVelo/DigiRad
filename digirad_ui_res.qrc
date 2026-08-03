@@ -1,8 +1,0 @@
-<RCC>
-  <qresource prefix="bmv">
-    <file>res/bmv_resize_trans.png</file>
-  </qresource>
-  <qresource prefix="nicht_investiv">
-    <file>res/nicht_investiv.png</file>
-  </qresource>
-</RCC>
