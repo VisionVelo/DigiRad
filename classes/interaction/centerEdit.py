@@ -67,7 +67,7 @@ class CenterEditFeatureHandler:
         """Open the attribute edit dialog for the feature"""
         if self.layer.isEditable() or self.layer.startEditing():
             dialog = QgsAttributeDialog(self.layer, feature, False, None, True)
-            dialog.setMode(QgsAttributeEditorContext.SingleEditMode)
+            dialog.setMode(QgsAttributeEditorContext.Mode.SingleEditMode)
 
             if dialog.exec() == 1:
                 # The dialog automatically handles the attribute updates

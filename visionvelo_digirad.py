@@ -12,12 +12,6 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
-import sys
-
-# Initialize Qt resources from file resources.py
-from . import resources_rc
-sys.modules['resources_rc'] = resources_rc
-
 from .classes.processingConfig import ProcessingConfig
 from .classes.layerManager import LayerManager
 from .visionvelo_digirad_dialog import DigiRadDialog
@@ -102,7 +96,7 @@ class DigiRad:
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
-            path (e.g. ':/plugins/foo/bar.png') or a normal file system path.
+            file system path (Qt6 has no compiled resources).
         :type icon_path: str
 
         :param text: Text that should be shown in menu items for this action.

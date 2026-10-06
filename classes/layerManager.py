@@ -152,10 +152,11 @@ class LayerManager:
 
                 # Check if this is the first layer (create new file) or append
                 # to existing
+                actions = QgsVectorFileWriter.ActionOnExistingFile
                 if os.path.exists(gpkgFilePath):
-                    options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteLayer
+                    options.actionOnExistingFile = actions.CreateOrOverwriteLayer
                 else:
-                    options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteFile
+                    options.actionOnExistingFile = actions.CreateOrOverwriteFile
 
                 error = QgsVectorFileWriter.writeAsVectorFormatV3(
                     layer.qgsLayer(),
@@ -163,7 +164,7 @@ class LayerManager:
                     layer.qgsLayer().transformContext(),
                     options
                 )
-                if error[0] == QgsVectorFileWriter.NoError:
+                if error[0] == QgsVectorFileWriter.WriterError.NoError:
                     pass
                 else:
                     msg = f"Error writing layer {layer.name()}: {error[1]}"

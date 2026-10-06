@@ -14,10 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 
 import os
+import re
 
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
-from qgis.PyQt.QtCore import pyqtSignal
+from qgis.PyQt.QtCore import pyqtSignal, QUrl
 from qgis.core import QgsMapLayerProxyModel, QgsFieldProxyModel, QgsMessageLog, QgsVectorLayer
 
 from .qtHelpers import QtHelper
@@ -82,13 +83,31 @@ class DigiRadDialog(QtWidgets.QDockWidget, FORM_CLASS):
         self.closingPlugin.emit()
         event.accept()
 
+    def _resolveRichTextImages(self):
+        """Point rich text images at real files.
+
+        Qt6 dropped compiled resources, so the ``:/<prefix>/res/<file>``
+        URLs baked into the .ui file are rewritten to the plugin's own
+        ``res`` directory at runtime.
+        """
+        resDir = QUrl.fromLocalFile(
+            os.path.join(os.path.dirname(__file__), 'res') + os.sep).toString()
+
+        for label in self.findChildren(QtWidgets.QLabel):
+            text = label.text()
+            if ':/' not in text:
+                continue
+            label.setText(re.sub(r'"(:/[^/"]+/res/)', f'"{resDir}', text))
+
     def postSetupUi(self):
+        self._resolveRichTextImages()
         self.loadProjectButton.hide()
         self.centerMapLayerComboBox.setFilters(
-            QgsMapLayerProxyModel.PointLayer)
-        self.reprojectSelectLayer.setFilters(QgsMapLayerProxyModel.LineLayer)
+            QgsMapLayerProxyModel.Filter.PointLayer)
+        self.reprojectSelectLayer.setFilters(
+            QgsMapLayerProxyModel.Filter.LineLayer)
         self.reprojectDemandSelectLayer.setFilters(
-            QgsMapLayerProxyModel.LineLayer)
+            QgsMapLayerProxyModel.Filter.LineLayer)
         self.reprojectDemandSelectField.setFilters(
             QgsFieldProxyModel.Filter.Numeric)
 
