@@ -3,7 +3,7 @@ name=DigiRad
 qgisMinimumVersion=4.0
 qgisMaximumVersion=4.99
 description=Supports the development of digital bicycle route networks.
-version=0.8.0
+version=0.8.1
 author=Vision Velo GmbH
 email=info@vision-velo.de
 
