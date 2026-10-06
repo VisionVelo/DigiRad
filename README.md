@@ -2,7 +2,7 @@
 
 [![QGIS Version](https://img.shields.io/badge/QGIS-4.0%2B%20%7C%203.16%2B-blue)](https://www.qgis.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-0.8.0%20%7C%200.7.4-orange)](https://github.com/VisionVelo/DigiRad/releases)
+[![Version](https://img.shields.io/badge/Version-0.8.x%20%7C%200.7.4-orange)](https://github.com/VisionVelo/DigiRad/releases)
 
 ![DigiRad Logo](res/NRVP_DigiRad_Projektlogo.jpg)
 
